@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Trero.IO
+// @name         ESP.IO
 // @namespace    http://tampermonkey.net/
 // @version      0.0.1
-// @description  ESP & Aimbot
+// @description  ESP
 // @author       yaami<3
 // @match        *://krunker.io/*
 // @grant        none
