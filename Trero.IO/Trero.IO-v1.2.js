@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Trero.IO
 // @namespace    http://tampermonkey.net/
-// @version      1.2.1
+// @version      0.0.1
 // @description  ESP
-// @author      yaami<3
+// @author       yaami<3
 // @match        *://krunker.io/*
 // @grant        none
 // @run-at       document-end
