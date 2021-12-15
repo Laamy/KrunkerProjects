@@ -2,7 +2,7 @@
 // @name         Trero.IO
 // @namespace    http://tampermonkey.net/
 // @version      0.0.1
-// @description  ESP
+// @description  ESP & Aimbot
 // @author       yaami<3
 // @match        *://krunker.io/*
 // @grant        none
@@ -20,11 +20,16 @@ const material = new THREE.MeshLambertMaterial({
 	color: 'red',
 });
 
+const targetGeometry = new THREE.TorusGeometry(10, 0.5, 15, 100); // new THREE.CylinderGeometry(5, 5, 20, 64);
+const targetGmaterial = new THREE.MeshLambertMaterial({
+	color: 'red',
+});
+
 material.wireframe = true;
 material.depthTest = false;
 material.opacity = 0.25;
 material.transparent = true;
-material.renderOrder = 255
+material.renderOrder = Infinity;
 
 const espBoxes = [];
 let isActive = true;
@@ -33,10 +38,13 @@ let scene;
 let aimbotKeybind = 'F'
 let aimbotActive = false;
 
-let espKeybind = 'X'
-let espActive = true; // I wanna make nametags
+let espKeybind = 'V'
+let espActive = false;
 
-let bhopKeybind = 'V'
+let xrayKeybind = 'X'
+let xrayActive = false;
+
+let bhopKeybind = 'C'
 let bhopActive = false;
 
 var aimbotText = document.createElement('div');
@@ -59,6 +67,16 @@ espText.style.top = (200 - 24) + 'px';
 espText.style.left = 'px';
 document.body.appendChild(espText);
 
+var xrayText = document.createElement('div');
+xrayText.style.position = 'absolute';
+xrayText.style.width = 100;
+xrayText.style.height = 100;
+xrayText.style.backgroundColor = "transparent";
+xrayText.innerHTML = "XRay [" + xrayKeybind + "] [" + !xrayActive + "]";
+xrayText.style.top = (200 - (24 * 2)) + 'px';
+xrayText.style.left = 'px';
+document.body.appendChild(xrayText);
+
 WeakMap.prototype.set = new Proxy( WeakMap.prototype.set, {
 	apply(target, thisArgs, args) {
 		if (args[0].type === 'Scene' && args[0].name === 'Main') {
@@ -76,14 +94,27 @@ function animate() {
 
 	const players = [];
 
-	let myPlayer;
+	let localPlr;
 
 	for (let i = 0; i < scene.children.length; i ++) {
 		const child = scene.children[ i ];
 		if (child.type === 'Object3D') {
 			try {
-				if ( child.children[0].children[0].type === 'PerspectiveCamera' ) { myPlayer = child; } else { players.push(child); }
+				if ( child.children[0].children[0].type === 'PerspectiveCamera' ) { localPlr = child; } else { players.push(child); }
 			} catch (err) {}
+		}
+		else if (child.type === 'Mesh') {
+			if (xrayActive) {
+				child.material.transparent = true;
+				child.material.opacity = 0.5;
+			}
+			else {
+				child.material.transparent = false;
+				child.material.opacity = 1;
+			}
+		}
+		else if (child.type === 'StaticMesh') {
+			child.type = 'Mesh';
 		}
 	}
 
@@ -98,7 +129,7 @@ function animate() {
 
 		const player = players[i];
 
-		if (player.position.x === myPlayer.position.x && player.position.z === myPlayer.position.z) { continue; }
+		if (player.position.x === localPlr.position.x && player.position.z === localPlr.position.z) { continue; }
 
 		if (player.firstTime !== true) {
 			const mesh = new THREE.Mesh(geometry, material);
@@ -109,7 +140,7 @@ function animate() {
 			player.firstTime = true;
 		}
 
-		const distance = player.position.distanceTo(myPlayer.position);
+		const distance = player.position.distanceTo(localPlr.position);
 
 		if (distance < minDistance) {
 			targetPlayer = player;
@@ -125,13 +156,13 @@ function animate() {
 
 	targetPlayer.children[0].children[0].localToWorld(tempVector);
 
-	entityLoop.position.copy(myPlayer.position);
+	entityLoop.position.copy(localPlr.position);
 
 	entityLoop.lookAt(tempVector);
 
 	if (aimbotActive){
-		myPlayer.children[0].rotation.x = -entityLoop.rotation.x; // 0.04 is the sweet spot for aimbot
-		myPlayer.rotation.y = entityLoop.rotation.y + Math.PI;
+		localPlr.children[0].rotation.x = -entityLoop.rotation.x; // 0.04 is the sweet spot for aimbot
+		localPlr.rotation.y = entityLoop.rotation.y + Math.PI;
 	}
 }
 
@@ -151,8 +182,9 @@ window.addEventListener('keydown', function(event) {
 		
 		aimbotActive = !aimbotActive;
 	}
-	if (String.fromCharCode(event.keyCode) === bhopKeybind) {
-		bhopActive = !bhopActive;
+	if (String.fromCharCode(event.keyCode) === xrayKeybind) {
+		xrayActive = !xrayActive;
+		xrayText.innerHTML = "XRay [" + xrayKeybind + "] [" + !xrayActive + "]"; 
 	}
 });
 
