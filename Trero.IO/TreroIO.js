@@ -25,9 +25,9 @@ const targetGmaterial = new THREE.MeshLambertMaterial({
 	color: 'red',
 });
 
-material.wireframe = true;
+material.wireframe = false;
 material.depthTest = false;
-material.opacity = 0.25;
+material.opacity = 0.50;
 material.transparent = true;
 material.renderOrder = Infinity;
 
@@ -106,7 +106,7 @@ function animate() {
 		else if (child.type === 'Mesh') {
 			if (xrayActive) {
 				child.material.transparent = true;
-				child.material.opacity = 0.5;
+				child.material.opacity = 0.6;
 			}
 			else {
 				child.material.transparent = false;
@@ -171,7 +171,7 @@ animate();
 window.addEventListener('keydown', function(event) {
 	if (String.fromCharCode(event.keyCode) === espKeybind) {
 		espText.innerHTML = "ESP [" + espKeybind + "] [" + !espActive + "]"; // Update ESP
-		
+
 		espActive = !espActive;
 		for (let i = 0; i < espBoxes.length; i ++) {
 			espBoxes[i].visible = espActive;
@@ -179,12 +179,12 @@ window.addEventListener('keydown', function(event) {
 	}
 	if (String.fromCharCode(event.keyCode) === aimbotKeybind) {
 		aimbotText.innerHTML = "Aimbot [" + aimbotKeybind + "] [" + !aimbotActive + "]"; // Update Aimbot
-		
+
 		aimbotActive = !aimbotActive;
 	}
 	if (String.fromCharCode(event.keyCode) === xrayKeybind) {
 		xrayActive = !xrayActive;
-		xrayText.innerHTML = "XRay [" + xrayKeybind + "] [" + !xrayActive + "]"; 
+		xrayText.innerHTML = "XRay [" + xrayKeybind + "] [" + !xrayActive + "]";
 	}
 });
 
