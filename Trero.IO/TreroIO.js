@@ -2,7 +2,7 @@
 // @name         Trero.IO
 // @namespace    http://tampermonkey.net/
 // @version      0.0.1
-// @description  ESP & Aimbot
+// @description  ESP Aimbot & XRay ALSO DONT FORGET TO JOIN OUR DISCORD ! https://discord.gg/FtT2nRvczq
 // @author       yaami<3
 // @match        *://krunker.io/*
 // @grant        none
