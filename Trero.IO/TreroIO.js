@@ -2,10 +2,11 @@
 // @name         Trero.IO
 // @namespace    http://tampermonkey.net/
 // @version      0.0.1
-// @description  ESP Aimbot & XRay ALSO DONT FORGET TO JOIN OUR DISCORD ! https://discord.gg/FtT2nRvczq
+// @description  ESP & Aimbot
 // @author       yaami<3
 // @match        *://krunker.io/*
-// @match        https://*.browserfps.com/*
+// @match        *://*.browserfps.com/*
+// @match        *://shellshock.io/*
 // @grant        none
 // @run-at       document-end
 // @require      https://unpkg.com/three@latest/build/three.min.js
@@ -26,11 +27,13 @@ const targetGmaterial = new THREE.MeshLambertMaterial({
 	color: 'red',
 });
 
-material.wireframe = false;
+material.wireframe = true;
+
 material.depthTest = false;
-material.opacity = 0.50;
-material.transparent = true;
 material.renderOrder = Infinity;
+
+material.transparent = true;
+material.opacity = 0.25;
 
 const espBoxes = [];
 let isActive = true;
@@ -48,35 +51,55 @@ let xrayActive = false;
 let bhopKeybind = 'C'
 let bhopActive = false;
 
-var aimbotText = document.createElement('div');
-aimbotText.style.position = 'absolute';
-aimbotText.style.width = 100;
-aimbotText.style.height = 100;
-aimbotText.style.backgroundColor = "transparent";
-aimbotText.innerHTML = "Aimbot [" + aimbotKeybind + "] [" + !aimbotActive + "]";
-aimbotText.style.top = 200 + 'px';
-aimbotText.style.left = 'px';
-document.body.appendChild(aimbotText);
+const btnArray = [];
+const labArray = [];
+const panelArray = [];
 
-var espText = document.createElement('div');
-espText.style.position = 'absolute';
-espText.style.width = 100;
-espText.style.height = 100;
-espText.style.backgroundColor = "transparent";
-espText.innerHTML = "ESP [" + espKeybind + "] [" + !espActive + "]";
-espText.style.top = (200 - 24) + 'px';
-espText.style.left = 'px';
-document.body.appendChild(espText);
+function createPanel(x, y, sx, sy, color){
+	var panelTest = document.createElement('div'); // panel
+	panelTest.style.backgroundColor = color;
+	panelTest.style.position = 'absolute';
+	panelTest.style.padding = sx + 'px ' + sy + 'px';
+	panelTest.style.left = x + 'px';
+	panelTest.style.top = y + 'px';
+	panelArray.push(panelTest);
+	document.body.appendChild(panelTest);
+};
 
-var xrayText = document.createElement('div');
-xrayText.style.position = 'absolute';
-xrayText.style.width = 100;
-xrayText.style.height = 100;
-xrayText.style.backgroundColor = "transparent";
-xrayText.innerHTML = "XRay [" + xrayKeybind + "] [" + !xrayActive + "]";
-xrayText.style.top = (200 - (24 * 2)) + 'px';
-xrayText.style.left = 'px';
-document.body.appendChild(xrayText);
+function createBtn(x, y, text, color, onPressed){
+	var buttonTest = document.createElement('button');
+	buttonTest.style.position = 'absolute';
+	buttonTest.style.width = 100;
+	buttonTest.style.height = 100;
+	buttonTest.onclick = onPressed;
+	buttonTest.style.backgroundColor = color;
+	buttonTest.innerHTML = text;
+	buttonTest.style.top = y + 'px';
+	buttonTest.style.left = x + 'px';
+	btnArray.push(buttonTest);
+	document.body.appendChild(buttonTest);
+};
+
+function createLab(x, y, text, color){
+	var labelTest = document.createElement('div');
+	labelTest.style.position = 'absolute';
+	labelTest.style.width = 100;
+	labelTest.style.height = 100;
+	labelTest.style.backgroundColor = color;
+	labelTest.innerHTML = text;
+	labelTest.style.top = y + 'px';
+	labelTest.style.left = x + 'px';
+	labArray.push(labelTest);
+	document.body.appendChild(labelTest);
+};
+
+let posX = 255;
+let posY = 0;
+
+createLab(posX, posY + (24 * 0), "Trero.IO", "transparent"); // title
+createLab(posX, posY + (24 * 1), "Aimbot [" + aimbotKeybind + "] [" + !aimbotActive + "]", "transparent");
+createLab(posX, posY + (24 * 2), "ESP [" + espKeybind + "] [" + !espActive + "]", "transparent");
+createLab(posX, posY + (24 * 3), "XRay [" + xrayKeybind + "] [" + !xrayActive + "]", "transparent");
 
 WeakMap.prototype.set = new Proxy( WeakMap.prototype.set, {
 	apply(target, thisArgs, args) {
@@ -98,7 +121,7 @@ function animate() {
 	let localPlr;
 
 	for (let i = 0; i < scene.children.length; i ++) {
-		const child = scene.children[ i ];
+		const child = scene.children[i];
 		if (child.type === 'Object3D') {
 			try {
 				if ( child.children[0].children[0].type === 'PerspectiveCamera' ) { localPlr = child; } else { players.push(child); }
@@ -107,7 +130,7 @@ function animate() {
 		else if (child.type === 'Mesh') {
 			if (xrayActive) {
 				child.material.transparent = true;
-				child.material.opacity = 0.6;
+				child.material.opacity = 0.25;
 			}
 			else {
 				child.material.transparent = false;
@@ -115,7 +138,7 @@ function animate() {
 			}
 		}
 		else if (child.type === 'StaticMesh') {
-			child.type = 'Mesh';
+			child.type = 'Mesh'; // static objects fix (This took hours)
 		}
 	}
 
@@ -139,6 +162,15 @@ function animate() {
 			espBoxes.push(mesh);
 			player.add(mesh);
 			player.firstTime = true;
+			
+			
+			for (let c = 0; c < player.children[0].children.length; c++) { // deal with legs
+				//player.children[0].children[c].material = material;
+			}
+			
+			for (let c = 0; c < player.children[0].children[4].children.length; c++) { // deal with body
+				//player.children[0].children[4].children[c].material = material;
+			}
 		}
 
 		const distance = player.position.distanceTo(localPlr.position);
@@ -155,7 +187,8 @@ function animate() {
 
 	tempVector.setScalar(0);
 
-	targetPlayer.children[0].children[0].localToWorld(tempVector);
+	targetPlayer.children[0].children[4].children[0].localToWorld(tempVector);
+	//targetPlayer.children[0].children[4].children[0].material = material;
 
 	entityLoop.position.copy(localPlr.position);
 
@@ -171,21 +204,21 @@ animate();
 
 window.addEventListener('keydown', function(event) {
 	if (String.fromCharCode(event.keyCode) === espKeybind) {
-		espText.innerHTML = "ESP [" + espKeybind + "] [" + !espActive + "]"; // Update ESP
-
+		labArray[2].innerHTML = "ESP [" + espKeybind + "] [" + !espActive + "]"; // Update ESP
+		
 		espActive = !espActive;
 		for (let i = 0; i < espBoxes.length; i ++) {
 			espBoxes[i].visible = espActive;
 		}
 	}
 	if (String.fromCharCode(event.keyCode) === aimbotKeybind) {
-		aimbotText.innerHTML = "Aimbot [" + aimbotKeybind + "] [" + !aimbotActive + "]"; // Update Aimbot
-
+		labArray[1].innerHTML = "Aimbot [" + aimbotKeybind + "] [" + !aimbotActive + "]"; // Update Aimbot
+		
 		aimbotActive = !aimbotActive;
 	}
 	if (String.fromCharCode(event.keyCode) === xrayKeybind) {
 		xrayActive = !xrayActive;
-		xrayText.innerHTML = "XRay [" + xrayKeybind + "] [" + !xrayActive + "]";
+		labArray[3].innerHTML = "XRay [" + xrayKeybind + "] [" + !xrayActive + "]"; 
 	}
 });
 
@@ -193,4 +226,4 @@ setInterval(function(){ // Update ESP Hitboxes
     for (let i = 0; i < espBoxes.length; i ++) {
 		espBoxes[i].visible = espActive;
 	}
-}, 1000);
+}, 50);// 20 tps update
