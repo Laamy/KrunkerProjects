@@ -9,23 +9,16 @@
 // @grant        none
 // ==/UserScript==
 
-const padDivArray = [];
+const panelArray = [];
 
-function createPaddedDiv(x, y, sx, sy, color){
-	var panelTest = document.createElement('div');
-	
+function createPanel(x, y, sx, sy, color){
+	var panelTest = document.createElement('div'); // panel
 	panelTest.style.backgroundColor = color;
 	panelTest.style.position = 'absolute';
-	
-	panelTest.style.padding = 50 + 'px';
-	
-	panelTest.style.height = sy;
-	panelTest.style.width = sx;
+	panelTest.style.padding = sx + 'px ' + sy + 'px';
 	panelTest.style.left = x + 'px';
 	panelTest.style.top = y + 'px';
-	
-	padDivArray.push(panelTest);
 	document.body.appendChild(panelTest);
 };
 
-createPaddedDiv(500, 500 - 24, 1000, 1000, "red");
+createPanel(500, 500, 50, 100, "red");
