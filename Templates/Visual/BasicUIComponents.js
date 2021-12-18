@@ -18,6 +18,7 @@ function createPanel(x, y, sx, sy, color){
 	panelTest.style.padding = sx + 'px ' + sy + 'px';
 	panelTest.style.left = x + 'px';
 	panelTest.style.top = y + 'px';
+	panelArray.push(panelTest);
 	document.body.appendChild(panelTest);
 };
 
