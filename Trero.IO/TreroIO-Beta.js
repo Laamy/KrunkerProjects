@@ -182,49 +182,10 @@ function animate() {
 	//tempVector.testStr = "hello world";
 	//labArray[0].innerHTML = targetPlayer.children[0].children[0].originalMat;
 
-	targetPlayer.children[0].children[4].children[0].localToWorld(tempVector);
-	
-	if (chamsActive == true) {
-		for (let p1 = 0; p1 < targetPlayer.children[0].children.length; p1++) {
-			if (targetPlayer.children[0].children[p1].originalMat == undefined){
-				targetPlayer.children[0].children[p1].originalMat = targetPlayer.children[0].children[p1].material;
-			}
-			
-			targetPlayer.children[0].children[p1].material = material;
-		}//Legs
-		
-		for (let p1 = 0; p1 < targetPlayer.children[0].children[4].children.length; p1++) {
-			if (targetPlayer.children[0].children[4].children[p1].originalMat == undefined){
-				targetPlayer.children[0].children[4].children[p1].originalMat = targetPlayer.children[0].children[4].children[p1].material;
-			}
-			
-			targetPlayer.children[0].children[4].children[p1].material = material;
-		}//Torso/Head
-		
-		for (let p1 = 0; p1 < targetPlayer.children[0].children[4].children[2].children[0].children.length; p1++) {
-			if (targetPlayer.children[0].children[4].children[2].children[0].children[p1].originalMat == undefined){
-				targetPlayer.children[0].children[4].children[2].children[0].children[p1].originalMat = targetPlayer.children[0].children[4].children[2].children[0].children[p1].material;
-			}
-			
-			targetPlayer.children[0].children[4].children[2].children[0].children[p1].material = material;
-		}//ArmModels
+	if (tempVector != undefined) {
+		targetPlayer.children[0].children[4].children[0].localToWorld(tempVector);
 	}
-	else {
-		if (targetPlayer.children[0].children[0].originalMat != undefined) {
-			for (let p1 = 0; p1 < targetPlayer.children[0].children.length; p1++) {
-				targetPlayer.children[0].children[p1].material = targetPlayer.children[0].children[p1].originalMat;
-			}//Legs
-			
-			for (let p1 = 0; p1 < targetPlayer.children[0].children[4].children.length; p1++) {
-				targetPlayer.children[0].children[4].children[p1].material = targetPlayer.children[0].children[4].children[p1].originalMat;
-			}//Torso/Head
-			
-			for (let p1 = 0; p1 < targetPlayer.children[0].children[4].children[2].children[0].children.length; p1++) {
-				targetPlayer.children[0].children[4].children[2].children[0].children[p1].material = targetPlayer.children[0].children[4].children[2].children[0].children[p1].originalMat;
-			}//ArmModels
-		}
-	}
-	
+
 	entityLoop.position.copy(localPlr.position);
 
 	entityLoop.lookAt(tempVector);
@@ -233,6 +194,48 @@ function animate() {
 		localPlr.children[0].rotation.x = -entityLoop.rotation.x; // 0.04 is the sweet spot for aimbot
 		localPlr.rotation.y = entityLoop.rotation.y + Math.PI;
 	}
+
+	if (chamsActive == true) {
+		for (let p1 = 0; p1 < targetPlayer.children[0].children.length; p1++) {
+			if (targetPlayer.children[0].children[p1].originalMat == undefined){
+				targetPlayer.children[0].children[p1].originalMat = targetPlayer.children[0].children[p1].material;
+			}
+
+			targetPlayer.children[0].children[p1].material = material;
+		}//Legs
+
+		for (let p1 = 0; p1 < targetPlayer.children[0].children[4].children.length; p1++) {
+			if (targetPlayer.children[0].children[4].children[p1].originalMat == undefined){
+				targetPlayer.children[0].children[4].children[p1].originalMat = targetPlayer.children[0].children[4].children[p1].material;
+			}
+
+			targetPlayer.children[0].children[4].children[p1].material = material;
+		}//Torso/Head
+
+		for (let p1 = 0; p1 < targetPlayer.children[0].children[4].children[2].children[0].children.length; p1++) {
+			if (targetPlayer.children[0].children[4].children[2].children[0].children[p1].originalMat == undefined){
+				targetPlayer.children[0].children[4].children[2].children[0].children[p1].originalMat = targetPlayer.children[0].children[4].children[2].children[0].children[p1].material;
+			}
+
+			targetPlayer.children[0].children[4].children[2].children[0].children[p1].material = material;
+		}//ArmModels
+	}
+	else {
+		for (let p1 = 0; p1 < targetPlayer.children[0].children.length; p1++) {
+			if (targetPlayer.children[0].children[p1].originalMat == undefined) continue;
+			targetPlayer.children[0].children[p1].material = targetPlayer.children[0].children[p1].originalMat;
+		}//Legs
+
+		for (let p1 = 0; p1 < targetPlayer.children[0].children[4].children.length; p1++) {
+			if (targetPlayer.children[0].children[4].children[p1].originalMat == undefined) continue;
+			targetPlayer.children[0].children[4].children[p1].material = targetPlayer.children[0].children[4].children[p1].originalMat;
+		}//Torso/Head
+
+		for (let p1 = 0; p1 < targetPlayer.children[0].children[4].children[2].children[0].children.length; p1++) {
+			if (targetPlayer.children[0].children[4].children[2].children[0].children[p1].originalMat == undefined) continue;
+			targetPlayer.children[0].children[4].children[2].children[0].children[p1].material = targetPlayer.children[0].children[4].children[2].children[0].children[p1].originalMat;
+		}//ArmModels
+	}
 }
 
 animate();
@@ -240,12 +243,12 @@ animate();
 window.addEventListener('keydown', function(event) {
 	if (String.fromCharCode(event.keyCode) === aimbotKeybind) {
 		labArray[1].innerHTML = "Aimbot [" + aimbotKeybind + "] [" + aimbotActive + "]"; // Update Aimbot
-		
+
 		aimbotActive = !aimbotActive;
 	}
 	if (String.fromCharCode(event.keyCode) === espKeybind) {
 		labArray[2].innerHTML = "ESP [" + espKeybind + "] [" + espActive + "]"; // Update ESP
-		
+
 		espActive = !espActive;
 		for (let i = 0; i < espBoxes.length; i ++) {
 			espBoxes[i].visible = espActive;
@@ -253,11 +256,11 @@ window.addEventListener('keydown', function(event) {
 	}
 	if (String.fromCharCode(event.keyCode) === xrayKeybind) {
 		xrayActive = !xrayActive;
-		labArray[3].innerHTML = "XRay [" + xrayKeybind + "] [" + xrayActive + "]"; 
+		labArray[3].innerHTML = "XRay [" + xrayKeybind + "] [" + xrayActive + "]";
 	}
 	if (String.fromCharCode(event.keyCode) === chamsKeybind) {
 		chamsActive = !chamsActive;
-		labArray[4].innerHTML = "Chams [" + chamsKeybind + "] [" + chamsActive + "]"; 
+		labArray[4].innerHTML = "Chams [" + chamsKeybind + "] [" + chamsActive + "]";
 	}
 });
 
