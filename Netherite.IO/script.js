@@ -2,8 +2,8 @@
 // @name         Netherite.IO
 // @namespace    http://tampermonkey.net/
 // @version      1.0
-// @description  ESP & Aimbot
-// @author       yaami<3
+// @description  Netherite rewritten for .IO games (Krunker edition)
+// @author       yeemi<3#9764
 // @match        *://krunker.io/*
 // @match        *://*.browserfps.com/*
 // @match        *://browserfps.com/*
