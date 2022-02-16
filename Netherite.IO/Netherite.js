@@ -96,7 +96,7 @@ function createLab(x, y, text, color){
 let posX = 255;
 let posY = 0;
 
-createLab(posX, posY + (24 * 0), "Trero.IO", "transparent"); // title
+createLab(posX, posY + (24 * 0), "Netherite.IO", "transparent"); // title
 createLab(posX, posY + (24 * 1), "Aimbot [" + aimbotKeybind + "] [" + aimbotActive + "]", "transparent");
 createLab(posX, posY + (24 * 2), "ESP [" + espKeybind + "] [" + espActive + "]", "transparent");
 createLab(posX, posY + (24 * 3), "XRay [" + xrayKeybind + "] [" + xrayActive + "]", "transparent");
