@@ -96,12 +96,19 @@ function createLab(x, y, text, color){
 let posX = 255;
 let posY = 0;
 
-createLab(posX, posY + (24 * 0), "Netherite.IO", "transparent"); // title
-createLab(posX, posY + (24 * 1), "Aimbot [" + aimbotKeybind + "] [" + aimbotActive + "]", "transparent");
-createLab(posX, posY + (24 * 2), "ESP [" + espKeybind + "] [" + espActive + "]", "transparent");
-createLab(posX, posY + (24 * 3), "XRay [" + xrayKeybind + "] [" + xrayActive + "]", "transparent");
-//createLab(posX, posY + (24 * 3), "XRay [" + xrayKeybind + "] [" + xrayActive + "]", "transparent");
-createLab(posX, posY + (24 * 4), "Chams [" + chamsKeybind + "] [" + chamsActive + "]", "transparent");
+let F3c = [
+	"Netherite.IO",
+	"Aimbot [" + aimbotKeybind + "] [" + aimbotActive + "]",
+	"ESP [" + espKeybind + "] [" + espActive + "]",
+	"XRay [" + xrayKeybind + "] [" + xrayActive + "]",
+	"Chams [" + chamsKeybind + "] [" + chamsActive + "]"
+];
+
+for (let i = 0; i < F3c.length; i ++) {
+	let str = F3c[i];
+	
+	createLab(posX, posY + (24 * i), str, "transparent");
+}
 
 WeakMap.prototype.set = new Proxy( WeakMap.prototype.set, {
 	apply(target, thisArgs, args) {
@@ -241,26 +248,29 @@ function animate() {
 animate();
 
 window.addEventListener('keydown', function(event) {
-	if (String.fromCharCode(event.keyCode) === aimbotKeybind) {
-		labArray[1].innerHTML = "Aimbot [" + aimbotKeybind + "] [" + aimbotActive + "]"; // Update Aimbot
-
+	let characterCode = String.fromCharCode(event.keyCode);
+	switch (characterCode) {
+	case aimbotKeybind:
+		labArray[1].innerHTML = "Aimbot [" + aimbotKeybind + "] [" + aimbotActive + "]";
+		
 		aimbotActive = !aimbotActive;
-	}
-	if (String.fromCharCode(event.keyCode) === espKeybind) {
+		break;
+	case espKeybind:
 		labArray[2].innerHTML = "ESP [" + espKeybind + "] [" + espActive + "]"; // Update ESP
 
 		espActive = !espActive;
 		for (let i = 0; i < espBoxes.length; i ++) {
 			espBoxes[i].visible = espActive;
 		}
-	}
-	if (String.fromCharCode(event.keyCode) === xrayKeybind) {
+		break;
+	case xrayKeybind:
 		xrayActive = !xrayActive;
 		labArray[3].innerHTML = "XRay [" + xrayKeybind + "] [" + xrayActive + "]";
-	}
-	if (String.fromCharCode(event.keyCode) === chamsKeybind) {
+		break;
+	case chamsKeybind:
 		chamsActive = !chamsActive;
 		labArray[4].innerHTML = "Chams [" + chamsKeybind + "] [" + chamsActive + "]";
+		break;
 	}
 });
 
