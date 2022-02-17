@@ -74,6 +74,11 @@ function addModule(name, desc, keybind, category, enabled, enableFunc, disableFu
 	moduleArray.push(enableFunc);
 	moduleArray.push(disableFunc);
 	moduleArray.push(onTickFunc);
+
+	if (enabled) {
+		//moduleArray[5]();
+		labArray[0].innerHTML = "Enable called";
+    }
 	
 	modules.push(moduleArray);
 };
@@ -90,18 +95,23 @@ function getModuleByName(name) {
 	}
 };
 
-addModule("TestModule", "Module used for testing", 0x07, "Misc", false,
+addModule("TestModule", "Module used for testing", 0x07, "Misc", true,
 function () {
 	// onEnable
 
+	labArray[1].innerHTML = "TestModule: Enabled";
 }, function () {
 	// onDisable
 
+	labArray[1].innerHTML = "TestModule: Disabled";
 }, function () {
 	// onTick
 
+	labArray[0].innerHTML = "GameTick";
 });
 
-let testModule = getModuleByName("TestModule");
+createLab(0, 0, "", "transparent"); // debugging bar
 
-createLab(255, 0, testModule[1], "transparent"); // worked
+let testModule = getModuleByName("TestModule"); // testmodule ptr
+createLab(255, 0, testModule[0], "transparent"); // arraylist test
+

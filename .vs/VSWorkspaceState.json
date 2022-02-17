@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Documentation",
+    "\\Netherite.IO"
   ],
-  "SelectedNode": "\\Netherite.IO",
+  "SelectedNode": "\\Netherite.IO\\script.js",
   "PreviewInSolutionExplorer": false
 }
