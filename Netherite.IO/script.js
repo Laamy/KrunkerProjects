@@ -63,6 +63,8 @@ function createLab(x, y, text, color){
 	document.body.appendChild(labelTest);
 };
 
+createLab(0, 0, "", "transparent"); // debugging bar
+
 // Module Library
 function addModule(name, desc, keybind, category, enabled, enableFunc, disableFunc, onTickFunc) {
 	let moduleArray = [];
@@ -76,7 +78,7 @@ function addModule(name, desc, keybind, category, enabled, enableFunc, disableFu
 	moduleArray.push(onTickFunc);
 
 	if (enabled) {
-		//moduleArray[5]();
+		disableFunc();
 		labArray[0].innerHTML = "Enable called";
     }
 	
@@ -109,8 +111,6 @@ function () {
 
 	labArray[0].innerHTML = "GameTick";
 });
-
-createLab(0, 0, "", "transparent"); // debugging bar
 
 let testModule = getModuleByName("TestModule"); // testmodule ptr
 createLab(255, 0, testModule[0], "transparent"); // arraylist test
